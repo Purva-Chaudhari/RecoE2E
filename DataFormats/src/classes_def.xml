@@ -1,0 +1,57 @@
+<lcgdict>
+
+  <!--typedef e2e::pred-->
+  <class name="edm::AssociationVector<edm::RefProd<std::vector<reco::Photon> >,std::vector<float>,edm::Ref<std::vector<reco::Photon>,reco::Photon,edm::refhelper::FindUsingAdvance<std::vector<reco::Photon>,reco::Photon> >,unsigned int,edm::helper::AssociationIdenticalKeyReference>" >
+    <field name="transientVector_" transient="true"/>
+  </class>
+  <class name="std::pair<edm::Ref<std::vector<reco::Photon>,reco::Photon,edm::refhelper::FindUsingAdvance<std::vector<reco::Photon>,reco::Photon> >,float>"/>
+  <class name="std::vector<std::pair<edm::Ref<std::vector<reco::Photon>,reco::Photon,edm::refhelper::FindUsingAdvance<std::vector<reco::Photon>,reco::Photon> >,float > >"/>
+  <class name="edm::Wrapper<e2e::PhoPredCollection>"/>
+
+  <!--typedef e2e::seed-->
+  <class name="e2e::seed"/>
+  <class name="std::vector<e2e::seed>"/>
+  <class name="edm::AssociationVector<edm::RefProd<std::vector<reco::Photon> >,std::vector<e2e::seed>,edm::Ref<std::vector<reco::Photon>,reco::Photon,edm::refhelper::FindUsingAdvance<std::vector<reco::Photon>,reco::Photon> >,unsigned int,edm::helper::AssociationIdenticalKeyReference>" >
+    <field name="transientVector_" transient="true"/>
+  </class>
+  <class name="std::pair<edm::Ref<std::vector<reco::Photon>,reco::Photon,edm::refhelper::FindUsingAdvance<std::vector<reco::Photon>,reco::Photon> >,e2e::seed>"/>
+  <class name="std::vector<std::pair<edm::Ref<std::vector<reco::Photon>,reco::Photon,edm::refhelper::FindUsingAdvance<std::vector<reco::Photon>,reco::Photon> >,e2e::seed > >"/>
+  <class name="edm::Wrapper<e2e::PhoSeedCollection>"/>
+
+  <!--typedef e2e::Frame1D-->
+  <class name="e2e::Frame1D"/>
+  <class name="std::vector<e2e::Frame1D>"/>
+  <class name="edm::AssociationVector<edm::RefProd<std::vector<reco::Photon> >,std::vector<e2e::Frame1D>,edm::Ref<std::vector<reco::Photon>,reco::Photon,edm::refhelper::FindUsingAdvance<std::vector<reco::Photon>,reco::Photon> >,unsigned int,edm::helper::AssociationIdenticalKeyReference>" >
+    <field name="transientVector_" transient="true"/>
+  </class>
+  <class name="std::pair<edm::Ref<std::vector<reco::Photon>,reco::Photon,edm::refhelper::FindUsingAdvance<std::vector<reco::Photon>,reco::Photon> >,e2e::Frame1D>"/>
+  <class name="std::vector<std::pair<edm::Ref<std::vector<reco::Photon>,reco::Photon,edm::refhelper::FindUsingAdvance<std::vector<reco::Photon>,reco::Photon> >,e2e::Frame1D > >"/>
+  <class name="edm::Wrapper<e2e::PhoFrame1DCollection>"/>
+
+  <!--typedef e2e::Frame2D-->
+  <class name="e2e::Frame2D"/>
+  <class name="std::vector<e2e::Frame2D>"/>
+  <class name="edm::AssociationVector<edm::RefProd<std::vector<reco::Photon> >,std::vector<e2e::Frame2D>,edm::Ref<std::vector<reco::Photon>,reco::Photon,edm::refhelper::FindUsingAdvance<std::vector<reco::Photon>,reco::Photon> >,unsigned int,edm::helper::AssociationIdenticalKeyReference>" >
+    <field name="transientVector_" transient="true"/>
+  </class>
+  <class name="std::pair<edm::Ref<std::vector<reco::Photon>,reco::Photon,edm::refhelper::FindUsingAdvance<std::vector<reco::Photon>,reco::Photon> >,e2e::Frame2D>"/>
+  <class name="std::vector<std::pair<edm::Ref<std::vector<reco::Photon>,reco::Photon,edm::refhelper::FindUsingAdvance<std::vector<reco::Photon>,reco::Photon> >,e2e::Frame2D > >"/>
+  <class name="edm::Wrapper<e2e::Frame2D>"/>
+  <class name="edm::Wrapper<e2e::PhoFrame2DCollection>"/>
+
+  <!--typedef e2e::Frame3D-->
+  <class name="e2e::Frame3D"/>
+  <class name="std::vector<e2e::Frame3D>"/>
+  <class name="edm::AssociationVector<edm::RefProd<std::vector<reco::Photon> >,std::vector<e2e::Frame3D>,edm::Ref<std::vector<reco::Photon>,reco::Photon,edm::refhelper::FindUsingAdvance<std::vector<reco::Photon>,reco::Photon> >,unsigned int,edm::helper::AssociationIdenticalKeyReference>" >
+    <field name="transientVector_" transient="true"/>
+  </class>
+  <class name="std::pair<edm::Ref<std::vector<reco::Photon>,reco::Photon,edm::refhelper::FindUsingAdvance<std::vector<reco::Photon>,reco::Photon> >,e2e::Frame3D>"/>
+  <class name="std::vector<std::pair<edm::Ref<std::vector<reco::Photon>,reco::Photon,edm::refhelper::FindUsingAdvance<std::vector<reco::Photon>,reco::Photon> >,e2e::Frame3D > >"/>
+  <class name="edm::Wrapper<e2e::Frame3D>"/>
+  <class name="edm::Wrapper<e2e::PhoFrame3DCollection>"/>
+  
+  <!--typedef e2e::Frame4D-->
+  <class name="e2e::Frame4D"/>
+  <class name="edm::Wrapper<e2e::Frame4D>"/>
+
+</lcgdict>
