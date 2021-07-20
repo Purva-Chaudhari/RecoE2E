@@ -60,11 +60,30 @@ options.register('doBPIX4',
     mult = VarParsing.VarParsing.multiplicity.singleton,
     mytype = VarParsing.VarParsing.varType.bool,
     info = "set doBPIX4")
-options.register('doBPIX5',
-    default = True,
-    mult = VarParsing.VarParsing.multiplicity.singleton,
-    mytype = VarParsing.VarParsing.varType.bool,
-    info = "set doBPIX5")
+# Set doTOB to 1 to producer TOB layers
+options.register('doTOB',
+    default=True,
+    mult=VarParsing.VarParsing.multiplicity.singleton,
+    mytype=VarParsing.VarParsing.varType.bool,
+    info = "set doTOB")
+# Set doTOB to 1 to producer TIB layers
+options.register('doTIB',
+    default=True,
+    mult=VarParsing.VarParsing.multiplicity.singleton,
+    mytype=VarParsing.VarParsing.varType.bool,
+    info = "set doTIB")
+# Set doTOB to 1 to producer TEC layers
+options.register('doTEC',
+    default=True,
+    mult=VarParsing.VarParsing.multiplicity.singleton,
+    mytype=VarParsing.VarParsing.varType.bool,
+    info = "set doTEC")
+# Set doTOB to 1 to producer TID layers
+options.register('doTID',
+    default=True,
+    mult=VarParsing.VarParsing.multiplicity.singleton,
+    mytype=VarParsing.VarParsing.varType.bool,
+    info = "set doTID")
 # Set order of the channels
 options.register('setChannelOrder',
     default = "0,1,2,3,4,5,6,7",
@@ -118,8 +137,10 @@ process.JetFrames.doBPIX1 = options.doBPIX1
 process.JetFrames.doBPIX2 = options.doBPIX2
 process.JetFrames.doBPIX3 = options.doBPIX3
 process.JetFrames.doBPIX4 = options.doBPIX4
-process.JetFrames.doBPIX5 = options.doBPIX5
-
+process.JetFrames.doTOB = options.doTOB
+process.JetFrames.doTIB = options.doTIB
+process.JetFrames.doTEC = options.doTEC
+process.JetFrames.doTID = options.doTID
 
 process.DetFrames.doHBHEenergy = options.doHBHEenergy
 process.DetFrames.doECALstitched = options.doECALstitched
@@ -129,7 +150,10 @@ process.DetFrames.doBPIX1 = options.doBPIX1
 process.DetFrames.doBPIX2 = options.doBPIX2
 process.DetFrames.doBPIX3 = options.doBPIX3
 process.DetFrames.doBPIX4 = options.doBPIX4
-process.DetFrames.doBPIX5 = options.doBPIX5
+process.DetFrames.doTOB = options.doTOB
+process.DetFrames.doTIB = options.doTIB
+process.DetFrames.doTEC = options.doTEC
+process.DetFrames.doTID = options.doTID
 process.DetFrames.setChannelOrder = options.setChannelOrder
 
 process.TauTagger.TauModelName = cms.string("tfModels/"+options.TauModelName)

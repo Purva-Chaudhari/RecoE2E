@@ -63,11 +63,30 @@ options.register('doBPIX4',
     mult=VarParsing.VarParsing.multiplicity.singleton,
     mytype=VarParsing.VarParsing.varType.bool,
     info = "set doBPIX4")
-options.register('doBPIX5',
+# Set doTOB to 1 to producer TOB layers
+options.register('doTOB',
     default=True,
     mult=VarParsing.VarParsing.multiplicity.singleton,
     mytype=VarParsing.VarParsing.varType.bool,
-    info = "set doBPIX5")
+    info = "set doTOB")
+# Set doTOB to 1 to producer TIB layers
+options.register('doTIB',
+    default=True,
+    mult=VarParsing.VarParsing.multiplicity.singleton,
+    mytype=VarParsing.VarParsing.varType.bool,
+    info = "set doTIB")
+# Set doTOB to 1 to producer TEC layers
+options.register('doTEC',
+    default=True,
+    mult=VarParsing.VarParsing.multiplicity.singleton,
+    mytype=VarParsing.VarParsing.varType.bool,
+    info = "set doTEC")
+# Set doTOB to 1 to producer TID layers
+options.register('doTID',
+    default=True,
+    mult=VarParsing.VarParsing.multiplicity.singleton,
+    mytype=VarParsing.VarParsing.varType.bool,
+    info = "set doTID")
 # Name of the jets to be used.
 options.register('jetCollection',
     default='ak8',
@@ -140,7 +159,10 @@ process.JetFrames.doHBHEenergy = options.doHBHEenergy
 process.JetFrames.doECALstitched = options.doECALstitched
 process.JetFrames.doTracksAtECALstitchedPt = options.doTracksAtECALstitchedPt
 process.JetFrames.doTracksAtECALadjPt = options.doTracksAtECALadjPt
-process.JetFrames.doBPIX = options.doBPIX
+process.JetFrames.doBPIX1 = options.doBPIX1
+process.JetFrames.doBPIX2 = options.doBPIX2
+process.JetFrames.doBPIX3 = options.doBPIX3
+process.JetFrames.doBPIX4 = options.doBPIX4
 
 process.DetFrames.doHBHEenergy = options.doHBHEenergy
 process.DetFrames.doECALstitched = options.doECALstitched
@@ -150,7 +172,7 @@ process.DetFrames.doBPIX1 = options.doBPIX1
 process.DetFrames.doBPIX2 = options.doBPIX2
 process.DetFrames.doBPIX3 = options.doBPIX3
 process.DetFrames.doBPIX4 = options.doBPIX4
-process.DetFrames.doBPIX5 = options.doBPIX5
+
 
 #process.out = cms.OutputModule("PoolOutputModule",
 #    fileName = cms.untracked.string('myOutputFile.root')

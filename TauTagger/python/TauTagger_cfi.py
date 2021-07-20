@@ -15,6 +15,7 @@ TauTagger = cms.EDProducer('TauTagger'
     cms.InputTag('siStripMatchedRecHits:rphiRecHitUnmatched'),
     cms.InputTag('siStripMatchedRecHits:stereoRecHitUnmatched')
     )
+    , siStripMatchedRecHitCollection = cms.InputTag('siStripMatchedRecHits:matchedRecHit')
 
     # Jet level cfg
     , nJets = cms.int32(2)

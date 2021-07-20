@@ -63,7 +63,6 @@ process.DetFrames.doBPIX1 = False
 process.DetFrames.doBPIX2 = False
 process.DetFrames.doBPIX3 = False
 process.DetFrames.doBPIX4 = False
-process.DetFrames.doBPIX5 = False
 process.DetFrames.doTracksAtECALadjPt = False
 process.DetFrames.setChannelOrder = "1"
 
