@@ -53,5 +53,9 @@
   <!--typedef e2e::Frame4D-->
   <class name="e2e::Frame4D"/>
   <class name="edm::Wrapper<e2e::Frame4D>"/>
+  
+  <!-- RefToBaseProd<reco::Track> -->
+  <class name="edm::Association<std::vector<reco::TrackExtra>>"/>
+  <class name="edm::Wrapper<edm::Association<std::vector<reco::TrackExtra>>>"/>
 
 </lcgdict>
