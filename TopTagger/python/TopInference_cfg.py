@@ -82,7 +82,7 @@ process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
 process.load("Configuration.StandardSequences.GeometryRecoDB_cff")
 process.load("Configuration.StandardSequences.MagneticField_38T_cff")
 process.load("Configuration.StandardSequences.Reconstruction_cff")
-process.GlobalTag.globaltag = cms.string('102X_upgrade2018_realistic_v15')
+process.GlobalTag.globaltag = cms.string('113X_upgrade2018_realistic_v5')
 process.es_prefer_GlobalTag = cms.ESPrefer('PoolDBESSource','GlobalTag')
 
 process.maxEvents = cms.untracked.PSet(

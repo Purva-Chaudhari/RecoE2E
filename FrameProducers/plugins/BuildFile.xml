@@ -27,4 +27,6 @@
 <use name="Calibration/IsolatedParticles"/>
 <use name="DQM/HcalCommon"/>
 <use name="DataFormats/EgammaCandidates"/>
+<use name="Geometry/CommonDetUnit"/>
+<use name="Geometry/TrackerGeometryBuilder"/>
 <flags EDM_PLUGIN="1"/>
