@@ -1,4 +1,5 @@
 #include "RecoE2E/FrameProducers/interface/predict_tf.h"
+#include "PhysicsTools/ONNXRuntime/interface/ONNXRuntime.h"
 
 e2e::Frame2D e2e::predict_tf(e2e::Frame4D& vinputFrame, string model_filename, string input_layer_name, string output_layer_name){
  e2e::Frame2D output_preds;
@@ -6,6 +7,21 @@ e2e::Frame2D e2e::predict_tf(e2e::Frame4D& vinputFrame, string model_filename, s
  tensorflow::GraphDef graph_def;
  tensorflow::SessionOptions opts;
  std::vector<tensorflow::Tensor> outputs; // Store outputs
+
+ std::unique_ptr<cms::Ort::ONNXRuntime> model;
+ //Ort::SessionOptions* session_options = new Ort::SessionOptions();
+ //session_options->SetIntraOpNumThreads(1);
+ Ort::SessionOptions session_options;
+ std::vector<float> Onxxoutputs; 
+ //model = std::make_unique<cms::Ort::ONNXRuntime>(model_filename, session_options);
+ auto providers = Ort::GetAvailableProviders();
+ OrtCUDAProviderOptions cuda_options;
+ cuda_options.device_id = 0;
+ session_options.AppendExecutionProvider_CUDA(cuda_options);
+for (auto provider : providers) {
+    std::cout << "Onxx Provider : "<<provider << endl;
+   // std::cout<<session_options.config.gpu_options().visible_device_list();
+}
  // create a new session
  TF_CHECK_OK(NewSession(opts, &session));
  
