@@ -12,12 +12,21 @@ e2e::Frame2D e2e::predict_tf(e2e::Frame4D& vinputFrame, string model_filename, s
  //Ort::SessionOptions* session_options = new Ort::SessionOptions();
  //session_options->SetIntraOpNumThreads(1);
  Ort::SessionOptions session_options;
- std::vector<float> Onxxoutputs; 
+ std::vector<Ort::Value> inputTensors;
+ std::vector<Ort::Value> outputTensors;
  //model = std::make_unique<cms::Ort::ONNXRuntime>(model_filename, session_options);
  auto providers = Ort::GetAvailableProviders();
  OrtCUDAProviderOptions cuda_options;
  cuda_options.device_id = 0;
  session_options.AppendExecutionProvider_CUDA(cuda_options);
+ // Sets graph optimization level
+ session_options.SetGraphOptimizationLevel(GraphOptimizationLevel::ORT_ENABLE_EXTENDED);
+ std::string instanceName{"Particle-classification-inference"};
+ Ort::Env env(OrtLoggingLevel::ORT_LOGGING_LEVEL_WARNING,
+                 instanceName.c_str());
+ std::string modelFilepath ="RecoE2E/"+model_filename;
+ Ort::Session ort_session(env, modelFilepath.c_str(), session_options);
+
 for (auto provider : providers) {
     std::cout << "Onxx Provider : "<<provider << endl;
    // std::cout<<session_options.config.gpu_options().visible_device_list();
