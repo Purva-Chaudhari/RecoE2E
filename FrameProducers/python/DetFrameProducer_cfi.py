@@ -17,6 +17,7 @@ DetFrames = cms.EDProducer('DetFrameProducer'
     , ipTagInfoCollection = cms.InputTag("pfImpactParameterTagInfos")                                                     
     , siPixelRecHitCollection = cms.InputTag("siPixelRecHits")
     , siStripRecHitCollection = cms.VInputTag("siStripMatchedRecHits")
+    , siStripMatchedRecHitCollection = cms.InputTag("siStripMatchedRecHits:matchedRecHit")
     , mode = cms.string("JetLevel")
     # Jet level cfg
     , nJets = cms.int32(-1)
@@ -34,6 +35,9 @@ DetFrames = cms.EDProducer('DetFrameProducer'
     , doBPIX2 = cms.bool(True)
     , doBPIX3 = cms.bool(True)
     , doBPIX4 = cms.bool(True)
-    , doBPIX5 = cms.bool(True)
+    , doTOB = cms.bool(True)
+    , doTIB = cms.bool(True)
+    , doTEC = cms.bool(True)
+    , doTID = cms.bool(True)
     , setChannelOrder = cms.string("0,1,2,3,4,5,6,7")
     )

@@ -17,7 +17,8 @@ DetFrameProducer::DetFrameProducer(const edm::ParameterSet& iConfig)
   jetTagCollectionT_      = consumes<reco::JetTagCollection>(iConfig.getParameter<edm::InputTag>("jetTagCollection"));
   ipTagInfoCollectionT_   = consumes<std::vector<reco::CandIPTagInfo> > (iConfig.getParameter<edm::InputTag>("ipTagInfoCollection"));
   siPixelRecHitCollectionT_ = consumes<SiPixelRecHitCollection>(iConfig.getParameter<edm::InputTag>("siPixelRecHitCollection"));
- 
+  siStripRecHitCollectionT_ = consumes<SiStripMatchedRecHit2DCollection>(iConfig.getParameter<edm::InputTag>("siStripMatchedRecHitCollection"));
+  siStripMatchedRecHitCollectionT_ = consumes<SiStripMatchedRecHit2DCollection>(iConfig.getParameter<edm::InputTag>("siStripMatchedRecHitCollection")); 
   ///////////adjustable granularity stuff
 
   granularityMultiPhi[0]  = iConfig.getParameter<int>("granularityMultiPhi");
@@ -54,8 +55,11 @@ DetFrameProducer::DetFrameProducer(const edm::ParameterSet& iConfig)
   doBPIX1 = iConfig.getParameter<bool>("doBPIX1");
   doBPIX2 = iConfig.getParameter<bool>("doBPIX2");
   doBPIX3 = iConfig.getParameter<bool>("doBPIX3");
-  doBPIX4 = iConfig.getParameter<bool>("doBPIX4");
-  doBPIX5 = iConfig.getParameter<bool>("doBPIX5");	
+  doBPIX4 = iConfig.getParameter<bool>("doBPIX4");	
+  doTOB = iConfig.getParameter<bool>("doTOB");
+  doTIB = iConfig.getParameter<bool>("doTIB");
+  doTEC = iConfig.getParameter<bool>("doTEC");
+  doTID = iConfig.getParameter<bool>("doTID");
   setChannelOrder = iConfig.getParameter<std::string>("setChannelOrder");
   z0PVCut_   = iConfig.getParameter<double>("z0PVCut");
 
@@ -112,7 +116,11 @@ DetFrameProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
    e2e::Frame2D vBPIX3_ECAL_reshaped (nDetFrameH, e2e::Frame1D (nDetFrameW,0.));
    e2e::Frame2D vBPIX4_ECAL_reshaped (nDetFrameH, e2e::Frame1D (nDetFrameW,0.));
    e2e::Frame2D vBPIX5_ECAL_reshaped (nDetFrameH, e2e::Frame1D (nDetFrameW,0.));
-   e2e::Frame1D vChannelMap = {0,0,0,0,0,0,0,0,0,0,0,0};
+   e2e::Frame2D vTOB_ECAL_reshaped (nDetFrameH, e2e::Frame1D (nDetFrameW,0.));
+   e2e::Frame2D vTIB_ECAL_reshaped (nDetFrameH, e2e::Frame1D (nDetFrameW,0.));
+   e2e::Frame2D vTEC_ECAL_reshaped (nDetFrameH, e2e::Frame1D (nDetFrameW,0.));
+   e2e::Frame2D vTID_ECAL_reshaped (nDetFrameH, e2e::Frame1D (nDetFrameW,0.));
+   e2e::Frame1D vChannelMap = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
    
    if (doHBHEenergy){
 	vChannelMap[0] = 1;
@@ -234,8 +242,14 @@ DetFrameProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
 	for (unsigned int i=0;i<Nhitproj;i++)
   	{
     	  fillTRKlayersAtECALstitchedBPIX( iEvent, iSetup, i );
+         
   	}
-        // reshape detector image arrays to 280x360
+//	std::cout<<"SIZEBPIX "<<sizeof(vBPIX_ECAL_)/sizeof(vBPIX_ECAL_[0])<<" "<<vBPIX_ECAL_[0][0].size()<<'\n';
+//	std::cout<<"SIZETOB "<<sizeof(vTOB_ECAL_)/sizeof(vTOB_ECAL_[0])<<" "<<vTOB_ECAL_[0][0].size()<<'\n';
+//	std::cout<<"SIZETIB "<<sizeof(vTIB_ECAL_)/sizeof(vTIB_ECAL_[0])<<" "<<vTIB_ECAL_[0][0].size()<<'\n';
+  //	std::cout<<"SIZETEC "<<sizeof(vTEC_ECAL_)/sizeof(vTEC_ECAL_[0])<<" "<<vTEC_ECAL_[0][0].size()<<'\n';
+  //	std::cout<<"SIZETID "<<sizeof(vTID_ECAL_)/sizeof(vTID_ECAL_[0])<<" "<<vTID_ECAL_[0][0].size()<<'\n';
+       // reshape detector image arrays to 280x360
         for (unsigned int idx=0; idx<sizeof(vBPIX_ECAL_)/sizeof(vBPIX_ECAL_[0]); idx++){
 		      vBPIX3_ECAL_reshaped[int(idx/nDetFrameW)][idx%nDetFrameW]=vBPIX_ECAL_[2][0][idx];
         }
@@ -262,20 +276,66 @@ DetFrameProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
    	edm::LogInfo("DetFrameProducer") << " >> Number of BPIX channels: " << sizeof(vBPIX_ECAL_)/sizeof(vBPIX_ECAL_[0]) << " and Size of each BPIX channel: " << vBPIX_ECAL_[0][0].size();
    }
 
-   if (doBPIX5){
-        vChannelMap[10] = 1;
+ 
+   if (doTOB){
+        vChannelMap[11] = 1;
 	for (unsigned int i=0;i<Nhitproj;i++)
   	{
-    	  fillTRKlayersAtECALstitchedBPIX( iEvent, iSetup, i );
+    	  fillTRKlayersAtECALstitchedTOB( iEvent, iSetup, i );
   	}
         // reshape detector image arrays to 280x360
-        for (unsigned int idx=0; idx<sizeof(vBPIX_ECAL_)/sizeof(vBPIX_ECAL_[0]); idx++){
+        for (unsigned int idx=0; idx<sizeof(vTOB_ECAL_)/sizeof(vTOB_ECAL_[0]); idx++){
         	
-		vBPIX3_ECAL_reshaped[int(idx/nDetFrameW)][idx%nDetFrameW]=vBPIX_ECAL_[4][0][idx];
+		vTOB_ECAL_reshaped[int(idx/nDetFrameW)][idx%nDetFrameW]=vTOB_ECAL_[0][0][idx];
         }
-	vDetFrames.push_back(vBPIX5_ECAL_reshaped);
-	//std::cout<<" >> Number of BPIX channels: "<<sizeof(vBPIX_ECAL_)/sizeof(vBPIX_ECAL_[0])<<" and Size of each BPIX channel: "<<vBPIX_ECAL_[0][0].size()<<std::endl; 
-   	edm::LogInfo("DetFrameProducer") << " >> Number of BPIX channels: " << sizeof(vBPIX_ECAL_)/sizeof(vBPIX_ECAL_[0]) << " and Size of each BPIX channel: " << vBPIX_ECAL_[0][0].size();
+	vDetFrames.push_back(vTOB_ECAL_reshaped);
+	//std::cout<<" >> Number of TOB channels: "<<sizeof(vTOB_ECAL_)/sizeof(vTOB_ECAL_[0])<<" and Size of each TOB channel: "<<vTOB_ECAL_[0][0].size()<<std::endl; 
+   	edm::LogInfo("DetFrameProducer") << " >> Number of TOB channels: " << sizeof(vTOB_ECAL_)/sizeof(vTOB_ECAL_[0]) << " and Size of each TOB channel: " << vTOB_ECAL_[0][0].size();
+   }
+     if (doTIB){
+        vChannelMap[12] = 1;
+	for (unsigned int i=0;i<Nhitproj;i++)
+  	{
+    	  fillTRKlayersAtECALstitchedTIB( iEvent, iSetup, i );
+  	}
+        // reshape detector image arrays to 280x360
+        for (unsigned int idx=0; idx<sizeof(vTIB_ECAL_)/sizeof(vTIB_ECAL_[0]); idx++){
+        	
+		vTIB_ECAL_reshaped[int(idx/nDetFrameW)][idx%nDetFrameW]=vTIB_ECAL_[0][0][idx];
+        }
+	vDetFrames.push_back(vTIB_ECAL_reshaped);
+	//std::cout<<" >> Number of TIB channels: "<<sizeof(vTIB_ECAL_)/sizeof(vTIB_ECAL_[0])<<" and Size of each TIB channel: "<<vTIBB_ECAL_[0][0].size()<<std::endl; 
+   	edm::LogInfo("DetFrameProducer") << " >> Number of TIB channels: " << sizeof(vTIB_ECAL_)/sizeof(vTIB_ECAL_[0]) << " and Size of each TIB channel: " << vTIB_ECAL_[0][0].size();
+   }
+     if (doTEC){
+        vChannelMap[13] = 1;
+	for (unsigned int i=0;i<Nhitproj;i++)
+  	{
+    	  fillTRKlayersAtECALstitchedTEC( iEvent, iSetup, i );
+  	}
+        // reshape detector image arrays to 280x360
+        for (unsigned int idx=0; idx<sizeof(vTEC_ECAL_)/sizeof(vTEC_ECAL_[0]); idx++){
+        	
+		vTEC_ECAL_reshaped[int(idx/nDetFrameW)][idx%nDetFrameW]=vTEC_ECAL_[0][0][idx];
+        }
+	vDetFrames.push_back(vTEC_ECAL_reshaped);
+	//std::cout<<" >> Number of TEC channels: "<<sizeof(vTEC_ECAL_)/sizeof(vBPIX_ECAL_[0])<<" and Size of each TEC channel: "<<vTEC_ECAL_[0][0].size()<<std::endl; 
+   	edm::LogInfo("DetFrameProducer") << " >> Number of BPIX channels: " << sizeof(vTEC_ECAL_)/sizeof(vTEC_ECAL_[0]) << " and Size of each TEC channel: " << vTEC_ECAL_[0][0].size();
+   }
+     if (doTID){
+        vChannelMap[14] = 1;
+	for (unsigned int i=0;i<Nhitproj;i++)
+  	{
+    	  fillTRKlayersAtECALstitchedTID( iEvent, iSetup, i );
+  	}
+        // reshape detector image arrays to 280x360
+        for (unsigned int idx=0; idx<sizeof(vTID_ECAL_)/sizeof(vTID_ECAL_[0]); idx++){
+        	
+		vTID_ECAL_reshaped[int(idx/nDetFrameW)][idx%nDetFrameW]=vTID_ECAL_[0][0][idx];
+        }
+	vDetFrames.push_back(vTID_ECAL_reshaped);
+	//std::cout<<" >> Number of TID channels: "<<sizeof(vTID_ECAL_)/sizeof(vTID_ECAL_[0])<<" and Size of each TID channel: "<<vTID_ECAL_[0][0].size()<<std::endl; 
+   	edm::LogInfo("DetFrameProducer") << " >> Number of TID channels: " << sizeof(vTID_ECAL_)/sizeof(vTID_ECAL_[0]) << " and Size of each TID channel: " << vTID_ECAL_[0][0].size();
    }
 
    // Convert string of channel order to array of integers

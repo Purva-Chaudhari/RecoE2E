@@ -23,6 +23,8 @@
 #include "DataFormats/EcalDetId/interface/ESDetId.h"
 #include "DataFormats/SiPixelDetId/interface/PXBDetId.h"
 #include "DataFormats/SiPixelDetId/interface/PXFDetId.h"
+#include "DataFormats/SiStripDetId/interface/SiStripDetId.h"
+#include "DataFormats/TrackerCommon/interface/TrackerTopology.h"
 #include "Geometry/CaloGeometry/interface/CaloGeometry.h"
 #include "Geometry/CaloGeometry/interface/CaloCellGeometry.h"
 #include "Geometry/Records/interface/CaloGeometryRecord.h"
@@ -102,6 +104,10 @@ class TauTagger : public edm::stream::EDProducer<> {
       edm::EDGetTokenT<reco::GenJetCollection> genJetCollectionT_;
       edm::EDGetTokenT<edm::View<reco::Jet> > recoJetsT_;
       edm::EDGetTokenT<HBHERecHitCollection> HBHERecHitCollectionT_;
+      edm::EDGetTokenT<SiPixelRecHitCollection> siPixelRecHitCollectionT_;
+      edm::EDGetTokenT<SiStripMatchedRecHit2DCollection> siStripRecHitCollectionT_;
+//      std::vector<edm::InputTag> siStripRecHitCollectionT_;
+      edm::EDGetTokenT<SiStripMatchedRecHit2DCollection> siStripMatchedRecHitCollectionT_;
       //edm::EDGetTokenT<e2e::PhoFrame3DCollection> tEGframeCollection;
       // Handles
       edm::Handle<reco::PFJetCollection> jets;

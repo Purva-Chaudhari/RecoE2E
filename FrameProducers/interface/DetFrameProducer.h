@@ -23,8 +23,8 @@
 #include "Geometry/TrackerGeometryBuilder/interface/TrackerGeometry.h"
 #include "Geometry/TrackerGeometryBuilder/interface/StripGeomDetUnit.h"
 #include "Geometry/TrackerGeometryBuilder/interface/StripGeomDetType.h"
-#include "Geometry/TrackerGeometryBuilder/interface/PixelGeomDetUnit.h"
-#include "Geometry/TrackerGeometryBuilder/interface/PixelGeomDetType.h"
+#include "Geometry/CommonDetUnit/interface/PixelGeomDetUnit.h"
+#include "Geometry/CommonDetUnit/interface/PixelGeomDetType.h"
 
 #include "Calibration/IsolatedParticles/interface/DetIdFromEtaPhi.h"
 #include "MagneticField/Engine/interface/MagneticField.h"
@@ -60,6 +60,8 @@
 #include "DataFormats/TrackerRecHit2D/interface/SiPixelRecHitCollection.h"
 #include "DataFormats/TrackerRecHit2D/interface/SiStripMatchedRecHit2DCollection.h"
 #include "DataFormats/TrackerRecHit2D/interface/SiStripRecHit2DCollection.h"
+#include "DataFormats/SiStripDetId/interface/SiStripDetId.h"
+#include "DataFormats/TrackerCommon/interface/TrackerTopology.h"
 
 #include "FWCore/ServiceRegistry/interface/Service.h"
 #include "CommonTools/UtilAlgos/interface/TFileService.h"
@@ -131,7 +133,9 @@ class DetFrameProducer : public edm::stream::EDProducer<> {
       edm::EDGetTokenT<EBDigiCollection>     EBDigiCollectionT_;
    
       edm::EDGetTokenT<SiPixelRecHitCollection> siPixelRecHitCollectionT_;
-      std::vector<edm::InputTag> siStripRecHitCollectionT_;
+      edm::EDGetTokenT<SiStripMatchedRecHit2DCollection> siStripRecHitCollectionT_;
+//      std::vector<edm::InputTag> siStripRecHitCollectionT_;
+      edm::EDGetTokenT<SiStripMatchedRecHit2DCollection> siStripMatchedRecHitCollectionT_;
 
       // Detector image switches
       bool doECALstitched;
@@ -142,7 +146,10 @@ class DetFrameProducer : public edm::stream::EDProducer<> {
       bool doBPIX2;
       bool doBPIX3;
       bool doBPIX4;
-      bool doBPIX5;
+      bool doTOB;
+      bool doTIB;
+      bool doTEC;
+      bool doTID;
       std::string setChannelOrder;     
       double z0PVCut_; 
 
@@ -169,7 +176,12 @@ class DetFrameProducer : public edm::stream::EDProducer<> {
       e2e::Frame1D vECALadj_tracks_[Nadjproj];
       e2e::Frame1D vECALadj_tracksPt_max_[Nadjproj];
       std::vector<float> vBPIX_ECAL_[nBPIX][Nhitproj];
+      std::vector<float> vTOB_ECAL_[nTOB][Nhitproj];
+      std::vector<float> vTEC_ECAL_[nTEC][Nhitproj];
+      std::vector<float> vTIB_ECAL_[nTIB][Nhitproj];
+      std::vector<float> vTID_ECAL_[nTID][Nhitproj];
       
+
       unsigned int nPho;
       
       typedef reco::VertexCollection  PVCollection;
@@ -182,9 +194,16 @@ class DetFrameProducer : public edm::stream::EDProducer<> {
       void fillECALstitched   ( const edm::Event&, const edm::EventSetup& );
       void fillTracksAtECALstitched (const edm::Event&, const edm::EventSetup& );
       void fillTracksAtECALadjustable   ( const edm::Event&, const edm::EventSetup&, unsigned int proj );
-      unsigned int getLayer   (const DetId&, const TrackerTopology* );
+      unsigned int getLayerTOB   (const DetId&, const TrackerTopology* );
+      unsigned int getLayerTEC   (const DetId&, const TrackerTopology* );
+      unsigned int getLayerTIB   (const DetId&, const TrackerTopology* );
+      unsigned int getLayerTID   (const DetId&, const TrackerTopology* );
+      unsigned int getLayerBPIX   (const DetId&, const TrackerTopology* );
       void fillTRKlayersAtECALstitchedBPIX (const edm::Event&, const edm::EventSetup&, unsigned int);
- 
+      void fillTRKlayersAtECALstitchedTOB (const edm::Event&, const edm::EventSetup&, unsigned int);
+      void fillTRKlayersAtECALstitchedTEC (const edm::Event&, const edm::EventSetup&, unsigned int);
+      void fillTRKlayersAtECALstitchedTIB (const edm::Event&, const edm::EventSetup&, unsigned int);
+      void fillTRKlayersAtECALstitchedTID (const edm::Event&, const edm::EventSetup&, unsigned int);
       std::vector<int> findSubcrystal(const CaloGeometry* caloGeom, const float& eta, const float& phi, const int& granularityMultiEta, const int& granularityMultiPhi);
       void fillByBinNumber(TH2F * histo, const std::vector<int>& phi_eta, const float& value);   
       

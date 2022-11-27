@@ -44,6 +44,8 @@ JetFrames = cms.EDProducer('JetFrameProducer'
     cms.InputTag('siStripMatchedRecHits:rphiRecHitUnmatched'),
     cms.InputTag('siStripMatchedRecHits:stereoRecHitUnmatched')
     )
+    , siStripMatchedRecHitCollection = cms.InputTag('siStripMatchedRecHits:matchedRecHit')
+
 
     # Jet level cfg
     , nJets = cms.int32(2)
@@ -62,5 +64,8 @@ JetFrames = cms.EDProducer('JetFrameProducer'
     , doBPIX2 = cms.bool(True)
     , doBPIX3 = cms.bool(True)
     , doBPIX4 = cms.bool(True)
-    , doBPIX5 = cms.bool(True)
+    , doTOB = cms.bool(True)
+    , doTIB = cms.bool(True)
+    , doTEC = cms.bool(True)
+    , doTID = cms.bool(True)
     )

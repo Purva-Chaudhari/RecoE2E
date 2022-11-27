@@ -8,7 +8,7 @@ TH2F *hBPIX_ECAL[nBPIX][Nhitproj];
 TH2F *hEvt_EE_BPIX[nBPIX][nEE];
 
 // Function to map EE(phi,eta) histograms to ECAL(iphi,ieta) vector _______________________________// 
-void fillTRKLayerAtECAL_with_EEproj( TH2F *hEvt_EE_SUBDET, std::vector<float> & vSUBDET_ECAL_, int ieta_global_offset, int ieta_signed_offset ){
+void fillTRKLayerAtECAL_with_EEprojBPIX( TH2F *hEvt_EE_SUBDET, std::vector<float> & vSUBDET_ECAL_, int ieta_global_offset, int ieta_signed_offset ){
   int ieta_global_;// ieta_signed_;
   int ieta_, iphi_, idx_;
   float nEntries_=0.;
@@ -31,23 +31,23 @@ void fillTRKLayerAtECAL_with_EEproj( TH2F *hEvt_EE_SUBDET, std::vector<float> & 
   } // ieta_
 } // fillTracksAtECAL_with_EEproj
 
-void fillTRKLayerAtECAL_with_EEproj( TH2F *hEvt_EE_SUBDET[][nEE], std::vector<float> vSUBDET_ECAL_[][Nhitproj], int nSUBDET, unsigned int proj ){
+void fillTRKLayerAtECAL_with_EEprojBPIX( TH2F *hEvt_EE_SUBDET[][nEE], std::vector<float> vSUBDET_ECAL_[][Nhitproj], int nSUBDET, unsigned int proj ){
   int ieta_global_offset,ieta_signed_offset;
   for(int nLayer=0; nLayer<nSUBDET; nLayer++){
 
     // Map EE-(phi,eta) to bottom part of ECAL(iphi,ieta)
     ieta_global_offset = 0;
     ieta_signed_offset = -ECAL_IETA_MAX_EXT;
-    fillTRKLayerAtECAL_with_EEproj(hEvt_EE_SUBDET[nLayer][0], vSUBDET_ECAL_[nLayer][proj], ieta_global_offset, ieta_signed_offset);
+    fillTRKLayerAtECAL_with_EEprojBPIX(hEvt_EE_SUBDET[nLayer][0], vSUBDET_ECAL_[nLayer][proj], ieta_global_offset, ieta_signed_offset);
 
     // Map EE+(phi,eta) to upper part of ECAL(iphi,ieta)
     ieta_global_offset = ECAL_IETA_MAX_EXT + EB_IETA_MAX;
     ieta_signed_offset = EB_IETA_MAX;
-    fillTRKLayerAtECAL_with_EEproj(hEvt_EE_SUBDET[nLayer][1], vSUBDET_ECAL_[nLayer][proj], ieta_global_offset, ieta_signed_offset);
+    fillTRKLayerAtECAL_with_EEprojBPIX(hEvt_EE_SUBDET[nLayer][1], vSUBDET_ECAL_[nLayer][proj], ieta_global_offset, ieta_signed_offset);
   }
 }
 
-void fillTRKLayerAtEB (DetId id, int layer_, unsigned int proj, std::vector<float> vSUBDET_ECAL_[][Nhitproj] ) {
+void fillTRKLayerAtEBBPIX (DetId id, int layer_, unsigned int proj, std::vector<float> vSUBDET_ECAL_[][Nhitproj] ) {
   int ieta_global_offset = 55;
   EBDetId ebId( id );
   int iphi_ = ebId.iphi() - 1;
@@ -58,12 +58,12 @@ void fillTRKLayerAtEB (DetId id, int layer_, unsigned int proj, std::vector<floa
   vSUBDET_ECAL_[layer_][proj][idx_] += 1.0;
 }
 
-void fillHelperAtEE ( float phi_, float eta_, int layer_, TH2F *hEvt_EE_SUBDET[][nEE]) {
+void fillHelperAtEEBPIX ( float phi_, float eta_, int layer_, TH2F *hEvt_EE_SUBDET[][nEE]) {
   int iz_ = (eta_ > 0.) ? 1 : 0;
   hEvt_EE_SUBDET[layer_][iz_]->Fill( phi_, eta_);
 }
 
-unsigned int DetFrameProducer::getLayer(const DetId& detid, const TrackerTopology* tTopo) {
+unsigned int DetFrameProducer::getLayerBPIX(const DetId& detid, const TrackerTopology* tTopo) {
 
   unsigned int subid=detid.subdetId();
   switch(subid){
@@ -160,7 +160,7 @@ void DetFrameProducer::fillTRKlayersAtECALstitchedBPIX ( const edm::Event& iEven
       continue;
     }
 
-    unsigned int layer = getLayer(detId, tTopo);
+    unsigned int layer = getLayerBPIX(detId, tTopo);
     const PixelGeomDetUnit* theGeomDet  = dynamic_cast<const PixelGeomDetUnit*> (theTracker.idToDetUnit(detId) );
 
     SiPixelRecHitCollection::DetSet::const_iterator pixeliter=detset.begin();
@@ -197,15 +197,15 @@ void DetFrameProducer::fillTRKlayersAtECALstitchedBPIX ( const edm::Event& iEven
             break;
           }
         }
-
+        
         //if ( std::abs(eta) > 3. ) continue;
         DetId ecalId( spr::findDetIdECAL( caloGeom, eta, phi, false ) );
         if ( subid == PixelSubdetector::PixelBarrel ){
           if ( ecalId.subdetId() == EcalBarrel ){
-            fillTRKLayerAtEB ( ecalId, layer, proj, vBPIX_ECAL_ );
+            fillTRKLayerAtEBBPIX ( ecalId, layer, proj, vBPIX_ECAL_ );
           }
           else if ( ecalId.subdetId() == EcalEndcap ){
-            fillHelperAtEE ( phi, eta, layer, hEvt_EE_BPIX );
+            fillHelperAtEEBPIX ( phi, eta, layer, hEvt_EE_BPIX );
           }
         }
         else if ( subid == PixelSubdetector::PixelEndcap )
@@ -221,5 +221,5 @@ void DetFrameProducer::fillTRKlayersAtECALstitchedBPIX ( const edm::Event& iEven
       else edm::LogInfo("DetFrameProducer") << " !!!!!!!!!!!!!! NO PIXEL HITS ARE VALID !!!!!!!!!!!!!!"; //std::cout << "!!!!!!!!!!!!!! NO PIXEL HITS ARE VALID !!!!!!!!!!!!!!" << std::endl;
     }
   }
-  fillTRKLayerAtECAL_with_EEproj( hEvt_EE_BPIX, vBPIX_ECAL_, nBPIX, proj);
+  fillTRKLayerAtECAL_with_EEprojBPIX( hEvt_EE_BPIX, vBPIX_ECAL_, nBPIX, proj);
 } // fillEB()

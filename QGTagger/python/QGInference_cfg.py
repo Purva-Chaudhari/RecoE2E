@@ -60,11 +60,6 @@ options.register('doBPIX4',
     mult=VarParsing.VarParsing.multiplicity.singleton,
     mytype=VarParsing.VarParsing.varType.bool,
     info = "set doBPIX4")
-options.register('doBPIX5',
-    default=False,
-    mult=VarParsing.VarParsing.multiplicity.singleton,
-    mytype=VarParsing.VarParsing.varType.bool,
-    info = "set doBPIX5")
 # Set order of the channels
 options.register('setChannelOrder',
     default = "0,1,2,3,4,5,6,7",
@@ -87,7 +82,7 @@ process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
 process.load("Configuration.StandardSequences.GeometryRecoDB_cff")
 process.load("Configuration.StandardSequences.MagneticField_38T_cff")
 process.load("Configuration.StandardSequences.Reconstruction_cff")
-process.GlobalTag.globaltag = cms.string('102X_upgrade2018_realistic_v15')
+process.GlobalTag.globaltag = cms.string('113X_upgrade2018_realistic_v5')
 process.es_prefer_GlobalTag = cms.ESPrefer('PoolDBESSource','GlobalTag')
 
 process.maxEvents = cms.untracked.PSet(
@@ -118,7 +113,6 @@ process.JetFrames.doBPIX1 = options.doBPIX1
 process.JetFrames.doBPIX2 = options.doBPIX2
 process.JetFrames.doBPIX3 = options.doBPIX3
 process.JetFrames.doBPIX4 = options.doBPIX4
-process.JetFrames.doBPIX5 = options.doBPIX5
 
 process.DetFrames.doHBHEenergy = options.doHBHEenergy
 process.DetFrames.doECALstitched = options.doECALstitched
@@ -128,7 +122,6 @@ process.DetFrames.doBPIX1 = options.doBPIX1
 process.DetFrames.doBPIX2 = options.doBPIX2
 process.DetFrames.doBPIX3 = options.doBPIX3
 process.DetFrames.doBPIX4 = options.doBPIX4
-process.DetFrames.doBPIX5 = options.doBPIX5
 process.DetFrames.setChannelOrder = options.setChannelOrder
 
 process.QGTagger.QGModelName = cms.string("tfModels/"+options.QGModelName)
