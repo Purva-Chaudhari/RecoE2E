@@ -14,6 +14,7 @@ T vectorProduct(const std::vector<T>& v)
 }
 
 e2e::Frame2D e2e::predict_tf(e2e::Frame4D& vinputFrame, string model_filename, string input_layer_name, string output_layer_name){
+ //std::cout<<"In onnx predict.cc";
  e2e::Frame2D output_preds;
  tensorflow::Session* session;
  tensorflow::GraphDef graph_def;

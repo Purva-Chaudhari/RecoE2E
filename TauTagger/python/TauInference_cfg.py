@@ -121,10 +121,13 @@ process.source = cms.Source("PoolSource",
     , skipEvents = cms.untracked.uint32(0)#options.skipEvents
     )
 print (" >> Loaded",len(options.inputFiles),"input files from list.")
-
+process.load('DQMServices.Components.DQMFileSaver_cfi')
+process.dqmSaver.workflow = "/HLT/FastTimerService/All"
 process.load("RecoE2E.FrameProducers.DetFrameProducer_cfi")
 process.load("RecoE2E.FrameProducers.JetFrameProducer_cfi")
 process.load("RecoE2E.TauTagger.TauTagger_cfi")
+process.load( "HLTrigger.Timer.FastTimerService_cfi" )
+process.FastTimerService.printEventSummary = True
 #process.EGTagger.EGModelName = options.EGModelName
 process.JetFrames.jetCollection = cms.string("ak8")
 process.JetFrames.minJetPt = cms.double(35.)

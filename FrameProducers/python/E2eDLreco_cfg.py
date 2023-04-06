@@ -95,7 +95,7 @@ options.register('jetCollection',
     info = "Jets: ak4/ak8")
 # Name of the EGInference model to be used for inference.
 options.register('EGModelName',
-    default='e_vs_ph_model.pb',
+    default='sample.onnx',
     mult=VarParsing.VarParsing.multiplicity.singleton,
     mytype=VarParsing.VarParsing.varType.string,
     info = "EGInference Model name")
